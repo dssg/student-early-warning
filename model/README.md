@@ -17,7 +17,7 @@ The following must be installed prior to running the code. Newer versions may be
 
 The code in `studentRiskScores.py` uses a class defined in `classification.py` to create an object based on our simulated student dataset, and it creates a classification model that attempts to predict if a student is likely to graduate on time, displaying results in a variety of ways.
 
-The code below (contained in _studentRiskScores.py_) loads the simulated student dataset as a pandas DataFrame and creates a `Model` object that will be used to perform predictions:
+The code below loads the simulated student dataset as a pandas DataFrame and creates a `Model` object that will be used to perform predictions:
 
 ```python
 import classification
@@ -28,4 +28,11 @@ df = pd.read_csv('../data/simulated_data.csv',index_col=0)
 
 # Create a model object using the loaded data
 pred = classification.Model(df,'nograd')
+```
+
+###### Displaying a list with students at highest risk along with their risk scores
+
+```python
+# Returns the top 5% of students at highest risk based on the output of a RandomForest model using 10-fold cross validation
+pred.runClassification(outputFormat='risk', models=['RF'], topK=.05, nFolds=10)
 ```
