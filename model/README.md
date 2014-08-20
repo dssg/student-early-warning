@@ -17,7 +17,7 @@ The following must be installed prior to running the code. Newer versions may be
 
 The code in `studentRiskScores.py` uses a class defined in `classification.py` to create an object based on our simulated student dataset, and it creates a classification model that attempts to predict if a student is likely to graduate on time, displaying results in a variety of ways.
 
-The code below loads the simulated student dataset as a pandas DataFrame and creates a `Model` object that will be used to perform predictions:
+The code below (contained in _studentRiskScores.py_) loads the simulated student dataset as a pandas DataFrame and creates a `Model` object that will be used to perform predictions:
 
 ```python
 import classification
