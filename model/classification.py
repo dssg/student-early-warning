@@ -45,12 +45,13 @@ clfs = {'RF': RandomForestClassifier(n_estimators=50, n_jobs=-1),
         'DT': DecisionTreeClassifier()
         }
 
+
 class Model:
 
     def __init__(self, dataSet, dependentVar, doFeatureSelection=True, doPCA=False, nComponents=10):
         """ Data pre-processing constructor.
 
-        Constructor to pre-process pandas dataframes, extracting and encoding the outcome
+        Constructor to pre-process pandas DataFrames, extracting and encoding the outcome
         labels (class), dropping them from the dataset and converting categorical variables
         into integer numbers for compatibility with scikit-learn.
 
@@ -77,22 +78,19 @@ class Model:
         y = dataSet.loc[:,dependentVar]
 
         # Transform that information to a format that scikit-learn understands
+        # This may be redundant at times
         labels = preprocessing.LabelEncoder().fit_transform(y)
 
         # Remove the dependent variable from training sets
-        X = dataSet.drop(dependentVar,1)
+        X = dataSet.drop(dependentVar,1).values
         
         # Perform entropy-based feature selection 
         if doFeatureSelection:
-            ixs = X.columns
-            X = X.values
             print 'Performing Feature Selection:'
-            clf = DecisionTreeClassifier(criterion='entropy')
             print 'Shape of dataset before feature selection: ' + str(X.shape)
+            clf = DecisionTreeClassifier(criterion='entropy')
             X = clf.fit(X, y).transform(X)
             print 'Shape of dataset after feature selection: ' + str(X.shape) + '\n'
-        else:
-            X = X.values
         
         # Normalize values
         X = preprocessing.StandardScaler().fit(X).transform(X)
@@ -104,6 +102,7 @@ class Model:
             X = estimator.fit_transform(X)
             print 'Shape of dataset after PCA: ' + str(X.shape) + '\n'
             
+        # Save processed dataset, labels and student ids
         self.dataset = X
         self.labels = labels
         self.students = dataSet.index
@@ -113,7 +112,7 @@ class Model:
         """ Data subsampling.
         
         This function takes in a list or array indexes that will be used for training
-        and it performs subsampling in the majority class (c=0) to enforce a certain ratio
+        and it performs subsampling in the majority class (c == 0) to enforce a certain ratio
         between the two classes
 
         Parameters
@@ -131,10 +130,13 @@ class Model:
         --------
         np.ndarray 
             The new list of array indexes to be used for training
-           """
+        """
 
+        # Get indexes of instances that belong to classes 0 and 1
         indexes_0 = [item for item in ix if y[item] == 0]
         indexes_1 = [item for item in ix if y[item] == 1]
+
+        # Determine how large the new majority class set should be
         sample_length = int(len(indexes_1)*subsample_ratio)
         sample_indexes = random.sample(indexes_0, sample_length) + indexes_1
 
@@ -256,6 +258,7 @@ class Model:
                 kf = cross_validation.StratifiedKFold(self.labels, n_folds=nFolds)
                 for i, (train, test) in enumerate(kf):
                     if doSubsampling:
+                    	# Remove some random majority class instances to balance data
                         train = self.subsample(self.dataset,self.labels,train,subRate)
                     if doSMOTE:
                         # SMOTE the minority class and append new instances to training set 
@@ -268,11 +271,16 @@ class Model:
                         # Generate SMOTEd predictions and append that to the rersults list 
                         y_smote_prediction_results = np.concatenate((y_smote_prediction_results,y_pred_smote),axis=0)
                         
+                    # Generate predictions for current hold-out sample in i-th fold
                     y_pred = clf.fit(self.dataset[train], self.labels[train]).predict(self.dataset[test])
+                    # Append results to previous ones
                     y_prediction_results = np.concatenate((y_prediction_results,y_pred),axis=0)
+                    # Store the corresponding original values for the predictions just generated
                     y_oringinal_values = np.concatenate((y_oringinal_values,self.labels[test]),axis=0)
                 
                 # Print result summary table based on k-fold 
+                # This is specific to our particular experiment and classes are hard coded
+                # When oversampling is True, both results are displayed
                 if outputFormat=='summary':
                     print '\t\t\t\t\t\t'+models[ix]+ ' Summary Results'
                     cm = classification_report(y_oringinal_values, y_prediction_results,target_names=['Graduated','Did NOT Graduate'])
@@ -300,6 +308,8 @@ class Model:
                     print '----------------------------------------------------------\n'
                 
         # Generate ROC curves 
+        # The majority of the structure here is similar to above, so refer to early comments
+        # TO DO: create consise procedures to avoid code duplication
         elif outputFormat=='roc':
             for ix,clf in enumerate([clfs[x] for x in models]):
                 kf = cross_validation.StratifiedKFold(self.labels, n_folds=nFolds)
@@ -319,19 +329,25 @@ class Model:
                         mean_smote_tpr += np.interp(mean_smote_fpr, fpr, tpr)
                         mean_smote_tpr[0] = 0.0
 
+                    # Generate "probabilities" for the current hold out sample being predicted
                     probas_ = clf.fit(self.dataset[train], self.labels[train]).predict_proba(self.dataset[test])
                     # Compute ROC curve and area the curve
                     fpr, tpr, thresholds = roc_curve(self.labels[test], probas_[:, 1])
                     mean_tpr += np.interp(mean_fpr, fpr, tpr)
 
+                # Plot ROC baseline
                 pl.plot([0, 1], [0, 1], '--', color=(0.6, 0.6, 0.6), label='Baseline')
 
+                # Compute true positive rates
                 mean_tpr /= len(kf)
                 mean_tpr[-1] = 1.0
                 mean_auc = auc(mean_fpr, mean_tpr)
+
+                # Plot results
                 pl.plot(mean_fpr, mean_tpr, 'k-',
                         label='Mean ROC (area = %0.2f)' % mean_auc, lw=2)
                         
+                # Plot results with oversampling
                 if doSMOTE:
                     mean_smote_tpr /= len(kf)
                     mean_smote_tpr[-1] = 1.0
@@ -347,7 +363,7 @@ class Model:
                 pl.legend(loc="lower right")
                 pl.show()
                 
-        # Generate Precision-Recall curves or topK precision
+        # Generate Precision-Recall curves, topK precision, or list of topK at risk scores
         elif outputFormat =='prc' or outputFormat =='topk' or outputFormat =='risk':
             for ix,clf in enumerate([clfs[x] for x in models]):
                 y_prob = []; y_smote_prob = []
@@ -383,6 +399,7 @@ class Model:
                     probas_ = clf.predict_proba(self.dataset[test])
                     y_prob = np.concatenate((y_prob,probas_[:, 1]),axis=0)
                     
+                # Compute overall prediction, recall and area under PR-curve
                 precision, recall, thresholds = precision_recall_curve(y_oringinal_values, y_prob)
                 pr_auc = auc(recall, precision)
                 
@@ -391,6 +408,7 @@ class Model:
                     precision_smote, recall_smote, thresholds_smote = precision_recall_curve(y_oringinal_values, y_smote_prob)
                     pr_auc_smote = auc(recall_smote, precision_smote)
 
+                # Output the precision recall curve
                 if outputFormat=='prc':
                     pl.plot(recall, precision, color = 'b', label='Precision-Recall curve (area = %0.2f)' % pr_auc)
                     if doSMOTE:
@@ -403,6 +421,7 @@ class Model:
                     pl.legend(loc="lower right")
                     pl.show()
                     
+                # Output a list of the topK% students at highest risk along with their risk scores
                 elif outputFormat =='risk':
                     sort_ix = np.argsort(test_indexes)
                     students_by_risk = self.students[sort_ix]
@@ -417,7 +436,8 @@ class Model:
                     for i in range(r):
                         print '%-15s %-10d' % (probas[i][0], probas[i][1])
                     print '\n'
-                    
+                
+                # Output the precision on the topK%   
                 else:
                     ord_prob = np.argsort(y_prob,)[::-1] 
                     r = int(topK*len(y_oringinal_values))
