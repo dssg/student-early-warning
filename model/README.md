@@ -33,6 +33,17 @@ pred = classification.Model(df,'nograd')
 ###### Displaying a list with students at highest risk along with their risk scores
 
 ```python
-# Returns the top 5% of students at highest risk based on the output of a RandomForest model using 10-fold cross validation
+# Returns the top 5% of students at highest risk
+# based on the output of a RandomForest model using 10-fold cross validation
 pred.runClassification(outputFormat='risk', models=['RF'], topK=.05, nFolds=10)
 ```
+
+Above, the parameter *outputFormat* can be replaced by  'score', 'summary', 'matrix', 'roc', 'prc' or 'topk', all of which produce a different kind of output. Please refer to the comments in `classification.py` for a more detailed explanation of each. Below is an example of how to display the result as an ROC curve while also performing oversampling to improve performance.
+
+```python
+pred.runClassification(outputFormat='roc', models=['RF'], doSMOTE=True, pctSMOTE=200, nFolds=10)
+```
+
+*Output:*
+
+![roc](http://i.imgur.com/HN3Nzei.png)
