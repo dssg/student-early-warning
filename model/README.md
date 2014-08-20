@@ -1,6 +1,6 @@
 ## Running the Python student risk score code
 
-Below we cover a the code dependencies as well as a complete list of all available functionality.
+Below we highlight the code dependencies as well as a complete list of all available functionality.
 
 ### Dependencies
 
