@@ -21,10 +21,10 @@ The code requires R to be installed. For reference, we used R version 3.1.0.
 
 Once R has been installed, the below lines of code can be run in the terminal to launch the Shiny app. The script runDemo.R will check whether the relevant R packages have been installed, install them if necessary, and then launch the app in a new browser window.
 
-`
+```
 cd ~/student-early-warning
 R CMD BATCH dashboard/runDemo.R
-`
+```
 
 ## Language integration
 
