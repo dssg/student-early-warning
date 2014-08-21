@@ -2,6 +2,8 @@
 
 View a working demo of the student dashboard [here](http://d-miller.shinyapps.io/RiskVizDemo/). The code for the dashboard integrates the strengths of R for data analysis and JavaScript for interactivity. 
 
+![Dashboard](http://i.imgur.com/050QiW1.png)
+
 The [Shiny](http://shiny.rstudio.com/) package, written in R, can...
 * Run R code on a Shiny server (e.g., http://www.shinyapps.io) 
 * Read data from various sources including [databases](http://www.r-bloggers.com/mysql-and-r/), [user-uploaded data](http://shiny.rstudio.com/gallery/file-upload.html), and data stored on the Shiny server.
