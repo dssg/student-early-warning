@@ -1,0 +1,35 @@
+
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # This script is used to run the student dashboard demo.
+> # The code loads/installs relevant packages and runs the Shiny app
+> 
+> # We used Shiny version 0.10.0 to write and run the Shiny app,
+> # and the plyr package version 1.8.1 to pre-process data
+> # Earlier versions of these packages may cause errors. 
+> 
+> if (require("shiny") == FALSE)  install.packages("shiny")
+Loading required package: shiny
+> if (require("plyr")  == FALSE)  install.packages("plyr")
+Loading required package: plyr
+> 
+> setwd("~/student-early-warning/")
+> runApp("dashboard", launch.browser=TRUE)
+
+Listening on http://127.0.0.1:7441
