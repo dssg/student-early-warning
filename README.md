@@ -54,10 +54,15 @@ This repository is organized into four directories: `model`, `survival`, `dashbo
 ## Using our code
 Starting with the simulated dataset (or one of your own that adheres to that format) contained in `./data/`, you can train our models to predict the **the likelihood of not graduating on time** for a list of students and evaluate each model using a wide range of metrics.
 
-To do so, run the following commands:
+To do so, run the following command:
 
 ```
 python model/classification.py
+```
+
+To generate a dashboard using our R shiny app, run the command below:
+
+```
 R CMD BATCH dashboard/runDemo.R
 ```
 
