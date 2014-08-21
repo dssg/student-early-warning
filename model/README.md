@@ -38,6 +38,30 @@ pred = classification.Model(df,'nograd')
 pred.runClassification(outputFormat='risk', models=['RF'], topK=.05, nFolds=10)
 ```
 
+*Output:*
+
+```
+RF top 10.0% highest risk
+--------------------------
+Student         Risk Score
+-------         ----------
+Estelle         82        
+Kitty           78        
+Bennie          76        
+Lovie           68        
+Christie        60        
+Parthenia       57        
+Imogene         56        
+Lennie          54        
+Walter          54        
+Cecile          54        
+Malvina         50        
+Dove            48        
+Lota            48        
+Jo              46        
+...
+```
+
 Above, the parameter *outputFormat* can take the following values: `'score'`, `'summary'`, `'matrix'`, `'roc'`, `'prc'`, `'topk'` or `'risk'`,  all of which produce a different kind of output. Please refer to the comments in `classification.py` for a more detailed explanation of each. Below is an example of how to display the result as an ROC curve while also performing oversampling to improve performance.
 
 ```python
