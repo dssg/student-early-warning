@@ -32,4 +32,4 @@ Loading required package: plyr
 > setwd("~/student-early-warning/")
 > runApp("dashboard", launch.browser=TRUE)
 
-Listening on http://127.0.0.1:7441
+Listening on http://127.0.0.1:4439
