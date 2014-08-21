@@ -15,6 +15,17 @@ JavaScript can...
 * Create custom event handlers using the [jQuery](http://jquery.com/) library for determining actions of mouse clicks, hovers, etc.
 * Request Shiny to send more data, do more analyses, etc. 
 
+## Getting started
+
+The code requires R to be installed. For reference, we used R version 3.1.0. 
+
+Once R has been installed, the below lines of code can be run in the terminal to launch the Shiny app. The script runDemo.R will check whether the relevant R packages have been installed, install them if necessary, and then launch the app in a new browser window.
+
+`
+cd ~/student-early-warning
+R CMD BATCH dashboard/runDemo.R
+`
+
 ## Language integration
 
 The below diagram shows how the different code components talk to each other. The server.R and ui.R are standard files to include for any Shiny app. The server.R code runs the core data processing in R using the Shiny server, whereas ui.R specifies how the output should be displayed to the user. 
