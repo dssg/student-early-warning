@@ -30,7 +30,7 @@ df = pd.read_csv('../data/simulated_data.csv',index_col=0)
 pred = classification.Model(df,'nograd')
 ```
 
-###### Displaying a list with students at highest risk along with their risk scores
+#### Displaying a list with students at highest risk along with their risk scores
 
 ```python
 # Returns the top 5% of students at highest risk
