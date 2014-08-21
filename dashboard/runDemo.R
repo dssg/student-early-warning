@@ -8,4 +8,4 @@
 if (require("shiny") == FALSE)  install.packages("shiny")
 if (require("plyr")  == FALSE)  install.packages("plyr")
 
-runApp("~/student-early-warning/dashboard", launch.browser=TRUE)
+runApp("dashboard", launch.browser=TRUE)
