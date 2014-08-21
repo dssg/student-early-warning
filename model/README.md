@@ -41,7 +41,7 @@ pred.runClassification(outputFormat='risk', models=['RF'], topK=.05, nFolds=10)
 *Output:*
 
 ```
-RF top 10.0% highest risk
+RF top 5.0% highest risk
 --------------------------
 Student         Risk Score
 -------         ----------
