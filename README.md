@@ -54,7 +54,7 @@ This repository is organized into four directories: `model`, `survival`, `dashbo
 ## Using our code
 Starting with the simulated dataset (or one of your own that adheres to that format) contained in `./data/`, you can train our models to predict the **the likelihood of not graduating on time** for a list of students and evaluate each model using a wide range of metrics.
 
-To do so, from the repository's root directory, run the following command:
+To do so, first clone this repository and from its root directory, run the following command:
 
 ```
 python model/classification.py
