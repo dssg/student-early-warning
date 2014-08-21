@@ -40,11 +40,24 @@ A live demo of our risk score dashboard can be accessed [**here**](http://d-mill
 
 Using previously tuned predictive models, we can generate risk scores for new sets of students. These scores illustrate how likely/unlikely each student is to graduate on time, but they provide no insight as to the reasons why a student might be *at risk*. To address that issue, our web interface provides, in addition to this generated risk score, a breakdown of a few other important features, color coded to show how "far" a student is from the median observed across the entire population. This essentially gives educators the opportunity to not only identify the students who are at risk, but it also provides them some insight on what may be the root of that particular student's problem, allowing for better informed and personalized interventions. 
 
-![Dashboard](http://i.imgur.com/BJNZvub.png)
+![Dashboard](http://i.imgur.com/050QiW1.png)
 
 ## Project layout
 
 This repository is organized into three directories: `model`, `survival`, and `dashboard`, containing code responsible for training and evaluating classification models to predict student graduation, generating urgency scores for those students labeled as being at risk, and for creating the interactive student dashboard described above respectively.
+
+## Using our code
+Starting with the simulated dataset (or one of your own that adheres to that format) contained in `./data/`, you can train our models to predict the **the likelihood of not graduating on time** for a list of students and evaluate each model using a wide range of metrics.
+
+To do so, run the following commands:
+
+```
+python model/classification.py
+R CMD BATCH add-R-stuff-here
+```
+
+Please refer to the the content of each subfolder for a brief description of the required dependencies and further instructions.
+
 
 ## Team
 ![Team](http://i.imgur.com/xnpv0u7.png)
