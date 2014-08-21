@@ -44,5 +44,17 @@ Using previously tuned predictive models, we can generate risk scores for new se
 
 This repository is organized into three directories: `model`, `survival`, and `dashboard`, containing code responsible for training and evaluating classification models to predict student graduation, generating urgency scores for those students labeled as being at risk, and for creating the interactive student dashboard described above respectively.
 
+## Using our code
+Starting with the simulated dataset (or one of your own that adheres to that format) contained in `./data/`, you can train our models to predict the **the likelihood of not graduating on time** for a list of students and evaluate each model using a wide range of metrics.
+
+To do so, run the following commands:
+
+```
+python model/classification.py
+R CMD BATCH add-R-stuff-here
+```
+
+Please refer to the the content of each subfolder for a brief description of the required dependencies and further instructions.
+
 ## Team
 ![Team](http://i.imgur.com/xnpv0u7.png)
