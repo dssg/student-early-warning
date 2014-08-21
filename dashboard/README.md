@@ -15,12 +15,6 @@ JavaScript can...
 * Create custom event handlers using the [jQuery](http://jquery.com/) library for determining actions of mouse clicks, hovers, etc.
 * Request Shiny to send more data, do more analyses, etc. 
 
-## Data handling
-
-In the current implementation, most of the student data is kept stored on the Shiny server and only sent to the user when the user requests different data. For instance, when the user hovers over a particular student on the interactive graph, the JavaScript code sends a message to Shiny requesting data for that student. The Shiny server then determines the appropriate HTML code to generate for that student's report card and sends that HTML code back to the user. 
-
-Other code design is certainly possible. For instance, Shiny could send data to the user for all variables all at once, and then use JavaScript on the client side to directly modify HTML elements. Such an alternate design would not require further communication from Shiny after sending the initial data. This design may be useful if the developer wants to transition away from Shiny. However, other code would be necessary for interfacing with databases and analyzing/formatting data.
-
 ## Language integration
 
 The below diagram shows how the different code components talk to each other. The server.R and ui.R are standard files to include for any Shiny app. The server.R code runs the core data processing in R using the Shiny server, whereas ui.R specifies how the output should be displayed to the user. 
@@ -49,5 +43,9 @@ Communication between server.R and ui.R is part of Shiny's standard functionalit
  1. server.R: `output$reportCard <- renderUI({  return(createReportCard(currentData)) })`
  2. ui.R: `htmlOutput("reportCard")`
 
+## Data handling
 
+In the current implementation, most of the student data is kept stored on the Shiny server and only sent to the user when the user requests different data. For instance, when the user hovers over a particular student on the interactive graph, the JavaScript code sends a message to Shiny requesting data for that student. The Shiny server then determines the appropriate HTML code to generate for that student's report card and sends that HTML code back to the user. 
+
+Other code design is certainly possible. For instance, Shiny could send data to the user for all variables all at once, and then use JavaScript on the client side to directly modify HTML elements. Such an alternate design would not require further communication from Shiny after sending the initial data. This design may be useful if the developer wants to transition away from Shiny. However, other code would be necessary for interfacing with databases and analyzing/formatting data.
 
