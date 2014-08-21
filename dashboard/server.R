@@ -5,7 +5,7 @@
 
 # High-level summary of the code
 #    1. load a CSV file 
-#        > read.csv("data.csv")
+#        > read.csv("data/data.csv")
 #    2. add variables to the data frame (e.g., risk colors)
 #        > allData() <- reactive({ ... })
 #    3. gather the data to be plotted 
@@ -40,7 +40,7 @@ shinyServer(function(input, output, clientData, session) {
   #Load data stored as a CSV on the Shiny server.
   #This code could be changed to load from a DB (e.g., using MySQL queries)
   rawData <- reactive ({
-    return(read.csv("data.csv"))
+    return(read.csv("data/data.csv"))
   })
   
   ######################################
