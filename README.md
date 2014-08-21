@@ -58,7 +58,7 @@ To do so, run the following commands:
 
 ```
 python model/classification.py
-R CMD BATCH add-R-stuff-here
+R CMD BATCH dashboard/runDemo.R
 ```
 
 Please refer to the the content of each subfolder for a brief description of the required dependencies and further instructions.
