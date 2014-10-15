@@ -35,6 +35,7 @@ import matplotlib.pylab as pl
 # user wishes to run.                                                               #
 #####################################################################################
 
+# TODO: Abstract these following classifiers so they can be passed into runClassification with their own parameters
 clfs = {'RF': RandomForestClassifier(n_estimators=50, n_jobs=-1),
         'ET': ExtraTreesClassifier(n_estimators=10, n_jobs=-1, criterion='entropy'),
         'AB': AdaBoostClassifier(DecisionTreeClassifier(max_depth=1), algorithm="SAMME", n_estimators=200),
@@ -207,7 +208,7 @@ class Model:
 
 
     def runClassification(self, outputFormat='score', doSubsampling=False, subRate=1.0,
-                            doSMOTE=False, pctSMOTE=100, nFolds=10, models=['LR'], topK=.1):
+                            doSMOTE=False, pctSMOTE=100, nFolds=10, models=['LR'], topK=.1,):
         """ Main function to train and evaluate model
 
         Allows user to set the type of output and a few other parameters to running a K-fold
@@ -218,7 +219,7 @@ class Model:
         outputFormat :  string
             The desired output format. Choices are: 'score', 'summary', 'matrix', 'roc', 'prc', 'topk' and 'risk'
         doSubsampling : bool
-            Boolean value to determine wether to subsample de majority class
+            Boolean value to determine whether to subsample the majority class
         subRate : float
             The ratio majority/minority to keep for training
         doSMOTE : bool
@@ -229,6 +230,8 @@ class Model:
             The number of folds to be assigned to the K-fold process    
         models : list
             A list of classifiers to evaluate given by the 2-3 letter codes above
+	printFeatureImportance : bool (default False)
+	    Boolean value to determine whether to print RF generated feature importances
         
         Returns
         --------
@@ -272,7 +275,9 @@ class Model:
                         y_smote_prediction_results = np.concatenate((y_smote_prediction_results,y_pred_smote),axis=0)
                         
                     # Generate predictions for current hold-out sample in i-th fold
-                    y_pred = clf.fit(self.dataset[train], self.labels[train]).predict(self.dataset[test])
+		    fitted_clf = clf.fit(self.dataset[train], self.labels[train])
+		    # self.feature_importances = getattr(fitted_clf, 'feature_importances_', None)
+                    y_pred = fitted_clf.predict(self.dataset[test])
                     # Append results to previous ones
                     y_prediction_results = np.concatenate((y_prediction_results,y_pred),axis=0)
                     # Store the corresponding original values for the predictions just generated
@@ -309,7 +314,7 @@ class Model:
                 
         # Generate ROC curves 
         # The majority of the structure here is similar to above, so refer to early comments
-        # TO DO: create consise procedures to avoid code duplication
+        # TODO: create consise procedures to avoid code duplication
         elif outputFormat=='roc':
             for ix,clf in enumerate([clfs[x] for x in models]):
                 kf = cross_validation.StratifiedKFold(self.labels, n_folds=nFolds)
@@ -330,7 +335,9 @@ class Model:
                         mean_smote_tpr[0] = 0.0
 
                     # Generate "probabilities" for the current hold out sample being predicted
-                    probas_ = clf.fit(self.dataset[train], self.labels[train]).predict_proba(self.dataset[test])
+		    fitted_clf = clf.fit(self.dataset[train], self.labels[train])
+		    # self.feature_importances = getattr(fitted_clf, 'feature_importances_', None)
+                    probas_ = fitted_clf.predict_proba(self.dataset[test])
                     # Compute ROC curve and area the curve
                     fpr, tpr, thresholds = roc_curve(self.labels[test], probas_[:, 1])
                     mean_tpr += np.interp(mean_fpr, fpr, tpr)
@@ -449,3 +456,4 @@ class Model:
                         print models[ix]+ ' SMOTE Precision at top ' + str(100*topK) + '%'
                         print np.sum(y_oringinal_values[ord_prob][:r])/r
                     print '\n'
+
