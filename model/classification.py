@@ -430,8 +430,9 @@ class Model:
                     
                 # Output a list of the topK% students at highest risk along with their risk scores
                 elif outputFormat =='risk':
+                    test_indexes = test_indexes.astype(int)
                     sort_ix = np.argsort(test_indexes)
-                    students_by_risk = self.students[sort_ix]
+                    students_by_risk = self.students[test_indexes]
                     y_prob = ((y_prob[sort_ix])*100).astype(int)
                     probas = np.column_stack((students_by_risk,y_prob))
                     r = int(topK*len(y_oringinal_values))
