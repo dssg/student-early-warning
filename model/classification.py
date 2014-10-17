@@ -255,7 +255,7 @@ class Model:
             for ix,clf in enumerate([clfs[x] for x in models]):
                 # Store the prediction results and their corresponding real labels for each fold
                 y_prediction_results = []; y_smote_prediction_results = []
-                y_oringinal_values = []
+                y_original_values = []
                 
                 # Generate indexes for the K-fold setup
                 kf = cross_validation.StratifiedKFold(self.labels, n_folds=nFolds)
@@ -281,18 +281,18 @@ class Model:
                     # Append results to previous ones
                     y_prediction_results = np.concatenate((y_prediction_results,y_pred),axis=0)
                     # Store the corresponding original values for the predictions just generated
-                    y_oringinal_values = np.concatenate((y_oringinal_values,self.labels[test]),axis=0)
+                    y_original_values = np.concatenate((y_original_values,self.labels[test]),axis=0)
                 
                 # Print result summary table based on k-fold 
                 # This is specific to our particular experiment and classes are hard coded
                 # When oversampling is True, both results are displayed
                 if outputFormat=='summary':
                     print '\t\t\t\t\t\t'+models[ix]+ ' Summary Results'
-                    cm = classification_report(y_oringinal_values, y_prediction_results,target_names=['Graduated','Did NOT Graduate'])
+                    cm = classification_report(y_original_values, y_prediction_results,target_names=['Graduated','Did NOT Graduate'])
                     print(str(cm)+'\n')
                     if doSMOTE:
                         print '\t\t\t\t\t\t'+models[ix]+ ' SMOTE Summary Results'
-                        cm = classification_report(y_oringinal_values, y_smote_prediction_results,target_names=['Graduated','Did NOT Graduate'])
+                        cm = classification_report(y_original_values, y_smote_prediction_results,target_names=['Graduated','Did NOT Graduate'])
                         print(str(cm)+'\n')
                     print '----------------------------------------------------------\n'
                 
@@ -300,13 +300,13 @@ class Model:
                 else:
                     print '\t\t\t\t\t'+models[ix]+ ' Confusion Matrix'
                     print '\t\t\t\tGraduated\tDid NOT Graduate'
-                    cm = confusion_matrix(y_oringinal_values, y_prediction_results)
+                    cm = confusion_matrix(y_original_values, y_prediction_results)
                     print 'Graduated\t\t\t%d\t\t%d'% (cm[0][0],cm[0][1])
                     print 'Did NOT Graduate\t%d\t\t%d'% (cm[1][0],cm[1][1])
                     if doSMOTE:
                         print '\n\t\t\t\t'+models[ix]+ ' SMOTE Confusion Matrix'
                         print '\t\t\t\tGraduated\tDid NOT Graduate'
-                        cm = confusion_matrix(y_oringinal_values, y_smote_prediction_results)
+                        cm = confusion_matrix(y_original_values, y_smote_prediction_results)
                         print 'Graduated\t\t\t%d\t\t%d'% (cm[0][0],cm[0][1])
                         print 'Did NOT Graduate\t%d\t\t%d'% (cm[1][0],cm[1][1])
                         
@@ -375,7 +375,7 @@ class Model:
             for ix,clf in enumerate([clfs[x] for x in models]):
                 y_prob = []; y_smote_prob = []
                 y_prediction_results = []; y_smote_prediction_results = []
-                y_oringinal_values = []; test_indexes = []
+                y_original_values = []; test_indexes = []
             
                 kf = cross_validation.StratifiedKFold(self.labels, n_folds=nFolds, shuffle=True)
                 mean_pr = mean_smote_pr = 0.0
@@ -402,17 +402,17 @@ class Model:
                     y_pred = clf.predict(self.dataset[test])
                     y_prediction_results = np.concatenate((y_prediction_results,y_pred),axis=0)
                     test_indexes = np.concatenate((test_indexes,test),axis=0)
-                    y_oringinal_values = np.concatenate((y_oringinal_values,self.labels[test]),axis=0)
+                    y_original_values = np.concatenate((y_original_values,self.labels[test]),axis=0)
                     probas_ = clf.predict_proba(self.dataset[test])
                     y_prob = np.concatenate((y_prob,probas_[:, 1]),axis=0)
                     
                 # Compute overall prediction, recall and area under PR-curve
-                precision, recall, thresholds = precision_recall_curve(y_oringinal_values, y_prob)
+                precision, recall, thresholds = precision_recall_curve(y_original_values, y_prob)
                 pr_auc = auc(recall, precision)
                 
                         
                 if doSMOTE:
-                    precision_smote, recall_smote, thresholds_smote = precision_recall_curve(y_oringinal_values, y_smote_prob)
+                    precision_smote, recall_smote, thresholds_smote = precision_recall_curve(y_original_values, y_smote_prob)
                     pr_auc_smote = auc(recall_smote, precision_smote)
 
                 # Output the precision recall curve
@@ -435,7 +435,7 @@ class Model:
                     students_by_risk = self.students[test_indexes]
                     y_prob = ((y_prob[sort_ix])*100).astype(int)
                     probas = np.column_stack((students_by_risk,y_prob))
-                    r = int(topK*len(y_oringinal_values))
+                    r = int(topK*len(y_original_values))
                     print models[ix]+ ' top ' + str(100*topK) + '%' + ' highest risk'
                     print '--------------------------'
                     print '%-15s %-10s' % ('Student','Risk Score')
@@ -448,13 +448,13 @@ class Model:
                 # Output the precision on the topK%   
                 else:
                     ord_prob = np.argsort(y_prob,)[::-1] 
-                    r = int(topK*len(y_oringinal_values))
+                    r = int(topK*len(y_original_values))
                     print models[ix]+ ' Precision at top ' + str(100*topK) + '%'
-                    print np.sum(y_oringinal_values[ord_prob][:r])/r
+                    print np.sum(y_original_values[ord_prob][:r])/r
 
                     if doSMOTE:
                         ord_prob = np.argsort(y_smote_prob,)[::-1] 
                         print models[ix]+ ' SMOTE Precision at top ' + str(100*topK) + '%'
-                        print np.sum(y_oringinal_values[ord_prob][:r])/r
+                        print np.sum(y_original_values[ord_prob][:r])/r
                     print '\n'
 
