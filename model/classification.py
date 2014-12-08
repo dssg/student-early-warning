@@ -26,6 +26,7 @@ from sklearn.metrics import *
 import random
 import numpy as np
 import matplotlib.pylab as pl
+import pandas as pd
 
 
 
@@ -73,7 +74,12 @@ class Model:
         # Encode nominal features to conform with sklearn
         for i,tp in enumerate(dataSet.dtypes):
             if tp == 'object': 
-                unique_vals, dataSet.ix[:,i]  = np.unique(dataSet.ix[:,i] , return_inverse=True)
+                print 'Encoding feature \"' + dataSet.columns[i] + '\" ...'
+                print 'Old dataset shape: ' + str(dataSet.shape)
+                temp = pd.get_dummies(dataSet[dataSet.columns[i]],prefix=dataSet.columns[i])
+                dataSet = pd.concat([dataSet,temp],axis=1).drop(dataSet.columns[i],axis=1)
+                print 'New dataset shape: ' + str(dataSet.shape)
+                #unique_vals, dataSet.ix[:,i]  = np.unique(dataSet.ix[:,i] , return_inverse=True)
                 
         # Set the dependent variable (y) to the appropriate column
         y = dataSet.loc[:,dependentVar]
