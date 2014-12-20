@@ -1,6 +1,6 @@
 ## Overview 
 
-View a working demo of the student dashboard [here](http://d-miller.shinyapps.io/RiskVizDemo/). The code for the dashboard integrates the strengths of R for data analysis and JavaScript for interactivity. 
+View a working demo of the student dashboard [here](http://dsapp-education.shinyapps.io/dashboard). The code for the dashboard integrates the strengths of R for data analysis and JavaScript for interactivity. 
 
 ![Dashboard](http://i.imgur.com/050QiW1.png)
 
