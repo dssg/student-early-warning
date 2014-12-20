@@ -35,7 +35,7 @@ Read more about the data we used in the wiki (add link to **data** wiki page her
 
 The main goals of this project were to both: (i) generate accurate predictions and (ii) present the predictions through an actionable interface. Thus, a large amount of our efforts went into the design and implementation of a web-based tool that can be used by school administrators and counselors to track the *risk scores* of their students over time, allowing them to easily identify students that are in need of personal attention. 
 
-A live demo of our risk score dashboard can be accessed [**here**](http://d-miller.shinyapps.io/RiskVizDemo/).
+A live demo of our risk score dashboard can be accessed [**here**](http://dsapp-education.shinyapps.io/dashboard).
 
 ###Early warning dashboard and student "report card"
 
