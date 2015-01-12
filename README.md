@@ -41,7 +41,7 @@ A live demo of our risk score dashboard can be accessed [**here**](http://dsapp-
 
 Using previously tuned predictive models, we can generate risk scores for new sets of students. These scores illustrate how likely/unlikely each student is to graduate on time, but they provide little insight as to the reasons why a student might be *at risk*. To address this issue, our web interface provides a risk score and a breakdown of a few other important features, color-coded to show how "far" a student is from the median observed across the entire population. This gives educators the opportunity to not only identify the students who are at risk, but it also provides some insight as to how students differ and what may be underlying a given student's problem--allowing for better informed and personalized interventions. 
 
-![Dashboard](http://i.imgur.com/050QiW1.png)
+![Dashboard](http://i.imgur.com/vW1OVv8.png)
 
 ## Project layout
 
@@ -70,4 +70,4 @@ Please refer to the the content of each subfolder for a brief description of the
 
 
 ## Team
-![Team](http://i.imgur.com/xnpv0u7.png)
+![Team](http://i.imgur.com/si3PbB5.png)
