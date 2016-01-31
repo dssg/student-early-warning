@@ -49,7 +49,7 @@ This repository is organized into four directories: `model`, `survival`, `dashbo
 * `model`: training and evaluating classification models to predict student graduation 
 * `survival`: generating urgency scores for those students labeled as being at risk
 * `dashboard`: creating the interactive student dashboard described above
-* `undermath`: performing some exploratory analysis to identify groups that may be undermatching
+* `undermatch`: performing some exploratory analysis to identify groups that may be undermatching
 
 ## Using our code
 Starting with the simulated dataset (or one of your own that adheres to that format) contained in `./data/`, you can train our models to predict the **the likelihood of not graduating on time** for a list of students and evaluate each model using a wide range of metrics.
